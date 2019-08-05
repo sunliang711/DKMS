@@ -88,7 +88,7 @@ func login(c *gin.Context) {
 	//query in db to find user
 	valid, err := models.CheckUser(cre.PID,cre.Phone, cre.Password)
 	if err != nil {
-		msg := fmt.Sprintf("Internal DB error: %v", err)
+		msg := fmt.Sprintf("Internal db error: %v", err)
 		logrus.Error(msg)
 		c.JSON(200, gin.H{
 			"code": 1,

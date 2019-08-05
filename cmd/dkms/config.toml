@@ -1,0 +1,12 @@
+[mysql]
+dsn="root@tcp(localhost)/dkms"
+[server]
+port=8080
+
+[tls]
+enable = false
+certFile = "cert.pem"
+keyFile = "cert.key"
+
+[log]
+level = "debug"

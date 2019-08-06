@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	_ "github.com/sunliang711/DKMS/config"
 	"github.com/sunliang711/DKMS/handlers"
 	"github.com/sunliang711/DKMS/models"
-	"github.com/spf13/viper"
 )
 
 func main() {

@@ -21,8 +21,9 @@ func StartServer(addr string, tls bool, certFile string, keyFile string) {
 	router.POST("/login", login)
 
 	//the following need authMiddleware
-	router.POST("/todo", authMiddleware, todo)
-	//...
+	router.Use(authMiddleware)
+	router.GET("/get_pk_sk_pairs", GetPkSkPairs)
+	router.POST("/update_auth_key", updateAuthKey)
 
 	logrus.Infof("Start server on %v, tls enabled: %v", addr, tls)
 	if tls {
@@ -37,8 +38,8 @@ func todo(c *gin.Context) {
 	t := c.Request.Header.Get("token")
 	p := token2User[t]
 	logrus.Debugf("phone: %v", p)
-	c.JSON(200,gin.H{
-		"code":0,
-		"msg":"OK",
+	c.JSON(200, gin.H{
+		"code": 0,
+		"msg":  "OK",
 	})
 }

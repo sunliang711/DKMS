@@ -10,3 +10,7 @@ keyFile = "cert.key"
 
 [log]
 level = "debug"
+
+[enc]
+server = "http://www.myprivacy.top:5000"
+token = "burenshizheshigesha"

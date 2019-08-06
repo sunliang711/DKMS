@@ -17,3 +17,9 @@ type Credential struct {
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
+
+// Identity used for identity user
+type Identity struct {
+	PID   string `json:"pid" form:"pid"`
+	Phone string `json:"phone" form:"phone"`
+}

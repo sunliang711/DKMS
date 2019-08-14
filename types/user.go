@@ -7,7 +7,9 @@ type UserInfo struct {
 	Password            string `json:"password"`
 	Phone               string `json:"phone"`
 	AuthKey             string `json:"auth_key"`
+	BeginTimestamp      int    `json:"begin_timestamp"`
 	ExpiredTimestamp    int    `json:"expired_timestamp"`
+	BeginTimestamp3rd   int    `json:"begin_timestamp3rd"`
 	ExpiredTimestamp3rd int    `json:"expired_timestamp3rd"`
 }
 
@@ -22,4 +24,20 @@ type Credential struct {
 type Identity struct {
 	PID   string `json:"pid" form:"pid"`
 	Phone string `json:"phone" form:"phone"`
+}
+
+// ValidPeriod TODO
+type ValidPeriod struct {
+}
+
+// RegisterObj TODO
+type RegisterObj struct {
+	UserInfo
+	Token string `json:"token"`
+}
+
+// PidPhone TODO
+type PidPhone struct {
+	PID   string `json:"pid"`
+	Phone string `json:"phone"`
 }

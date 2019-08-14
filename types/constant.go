@@ -8,3 +8,7 @@ const(
 	//第三方
 	KeyType3rd = 2
 )
+
+const(
+	DefaultPassword = "1234"
+)

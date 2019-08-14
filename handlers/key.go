@@ -15,39 +15,43 @@ func GetPkSkPairs(c *gin.Context) {
 	if err := c.BindQuery(&id); err != nil {
 		msg := fmt.Sprintf("Request data format error: %v", err)
 		logrus.Errorf(msg)
-		c.JSON(200, gin.H{
-			"code": 1,
-			"msg":  msg,
-		})
+		// c.JSON(200, gin.H{
+		// 	"code": 1,
+		// 	"msg":  msg,
+		// })
+		c.JSON(200, types.Response{1, msg, nil})
 		return
 	}
 	if id.PID == "" || id.Phone == "" {
 		msg := fmt.Sprintf("pid or phone is empty")
 		logrus.Errorf(msg)
-		c.JSON(200, gin.H{
-			"code": 1,
-			"msg":  msg,
-		})
+		// c.JSON(200, gin.H{
+		// 	"code": 1,
+		// 	"msg":  msg,
+		// })
+		c.JSON(200, types.Response{1, msg, nil})
 		return
 	}
 	pkMer, skMer, err := models.GetKeyPair(id.PID, id.Phone, types.KeyTypeMerchant)
 	if err != nil {
 		msg := fmt.Sprintf("Get merchant key pair error: %v", err)
 		logrus.Error(msg)
-		c.JSON(200, gin.H{
-			"code": 1,
-			"msg":  msg,
-		})
+		// c.JSON(200, gin.H{
+		// 	"code": 1,
+		// 	"msg":  msg,
+		// })
+		c.JSON(200, types.Response{1, msg, nil})
 		return
 	}
 	pk3rd, sk3rd, err := models.GetKeyPair(id.PID, id.Phone, types.KeyType3rd)
 	if err != nil {
 		msg := fmt.Sprintf("Get 3rd key pair error: %v", err)
 		logrus.Error(msg)
-		c.JSON(200, gin.H{
-			"code": 1,
-			"msg":  msg,
-		})
+		// c.JSON(200, gin.H{
+		// 	"code": 1,
+		// 	"msg":  msg,
+		// })
+		c.JSON(200, types.Response{1, msg, nil})
 		return
 	}
 
@@ -58,11 +62,12 @@ func GetPkSkPairs(c *gin.Context) {
 		Key3rd: types.KeyPair{pk3rd, sk3rd},
 	}
 
-	c.JSON(200, gin.H{
-		"code": 0,
-		"msg":  "OK",
-		"data": keyPairs,
-	})
+	// c.JSON(200, gin.H{
+	// 	"code": 0,
+	// 	"msg":  "OK",
+	// 	"data": keyPairs,
+	// })
+	c.JSON(200, types.Response{0, "OK", keyPairs})
 }
 
 // updateAuthKey TODO

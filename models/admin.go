@@ -1,10 +1,10 @@
 package models
 
 //ExistAdmin check existence with pid in table `admin`
-func ExistAdmin(pid string) (exist bool, err error) {
+func ExistAdmin(pid string,token string) (exist bool, err error) {
 	var count int
-	sql := "select count(*) from `admin` where pid=?"
-	rows, err := db.Query(sql, pid)
+	sql := "select count(*) from `admin` where pid=? and token = ?"
+	rows, err := db.Query(sql, pid,token)
 	if err != nil {
 		return
 	}

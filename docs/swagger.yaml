@@ -1,0 +1,53 @@
+basePath: /
+definitions:
+  types.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      msg:
+        type: string
+    type: object
+host: aliyun.eagle711.win:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is DKMS api.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: DKMS API
+  version: "1.0"
+paths:
+  /get_pk_sk_pairs:
+    get:
+      consumes:
+      - application/json
+      description: TODO
+      parameters:
+      - description: COMMENT
+        in: query
+        name: identity
+        required: true
+        type: types.Identity
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: COMMENT
+          schema:
+            $ref: '#/definitions/types.Response'
+            type: object
+        "400":
+          description: COMMENT
+          schema:
+            $ref: '#/definitions/types.Response'
+            type: object
+      summary: get (pk,sk) pair
+      tags:
+      - GetPkSKPairs
+swagger: "2.0"

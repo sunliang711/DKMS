@@ -2,6 +2,7 @@
 dsn="root@tcp(localhost)/dkms"
 [server]
 port=8080
+jwtExp=12
 
 [tls]
 enable = false

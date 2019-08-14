@@ -1,7 +1,10 @@
 package models
 
-import "fmt"
-import "github.com/sirupsen/logrus"
+import (
+	"fmt"
+
+	"github.com/sirupsen/logrus"
+)
 
 // GetKeyPair TODO
 func GetKeyPair(pid string, phone string, keyType int) (string, string, error) {
@@ -147,6 +150,51 @@ func UpdateAuthKey(pid, phone, authKey string) error {
 	sql := "update `user` set authKey = ? where pid = ? and phone = ?"
 	if _, err := db.Exec(sql, authKey, pid, phone); err != nil {
 		return err
+	}
+	return nil
+}
+
+//Threshold
+func Threshold(pid string) (int, int, error) {
+	sql := "select t,n from `admin` where pid = ?"
+	rows, err := db.Query(sql, pid)
+	if err != nil {
+		return 0, 0, fmt.Errorf("query thrdshold error: %v", err)
+	}
+	defer rows.Close()
+	var (
+		t int
+		n int
+	)
+	if rows.Next() {
+		rows.Scan(&t, &n)
+	}
+	return t, n, nil
+}
+
+// AddRK TODO
+// 2019/08/13 19:33:23
+func AddRK(pid, phone, receiver string, t int, n int, rk []string) error {
+	// rkCount := len(rk)
+	// questionSign := strings.Repeat("(?,?,?,?,?,?),", rkCount)
+	// questionSign = questionSign[:len(questionSign)-1]
+	// sql := "insert into `keyfrag`(pid,phone,receiver,t,n,segment) values" + questionSign
+
+	// var param []interface{}
+	// for i := range rk {
+	// 	param = append(param, []interface{}{pid, phone, receiver, t, n, rk[i]})
+	// }
+
+	// _, err := db.Exec(sql, pid, phone, rk[0], pid, phone, rk[1])
+	// return err
+	sql := "insert into `keyfrag` values(?,?,?,?,?,?)"
+	for i := range rk {
+		_, err := db.Exec(sql, pid, phone, receiver, t, n, rk[i])
+		if err != nil {
+			msg := fmt.Sprintf("run sql: %v error: %v", sql, err)
+			logrus.Error(msg)
+			return fmt.Errorf(msg)
+		}
 	}
 	return nil
 }

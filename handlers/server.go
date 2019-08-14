@@ -13,7 +13,10 @@ func StartServer(addr string, tls bool, certFile string, keyFile string) {
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.Use(gin.Logger())
-	router.Use(cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = append(config.AllowHeaders, "token")
+	router.Use(cors.New(config))
 
 	//admin register its user
 	router.POST("/register", register)
@@ -24,6 +27,8 @@ func StartServer(addr string, tls bool, certFile string, keyFile string) {
 	router.Use(authMiddleware)
 	router.GET("/get_pk_sk_pairs", GetPkSkPairs)
 	router.POST("/update_auth_key", updateAuthKey)
+	router.POST("/update_expired_timestamp", updateExpiredTimestamp)
+	router.GET("/get_expired_timestamp", getExpiredtimestamp)
 
 	logrus.Infof("Start server on %v, tls enabled: %v", addr, tls)
 	if tls {

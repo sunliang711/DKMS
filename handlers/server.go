@@ -22,6 +22,13 @@ func StartServer(addr string, tls bool, certFile string, keyFile string) {
 	router.POST("/register", register)
 	//user login
 	router.POST("/login", login)
+	router.POST("/pre", PRE)
+	router.POST("/check_pop", CheckPop)
+	router.POST("/auth_claim", AuthClaim)
+	router.POST("/check_auth", CheckAuth)
+
+	router.GET("/get_crypto_config", getCryptoConfig)
+	router.POST("/update_api", updateAPI)
 
 	//the following need authMiddleware
 	router.Use(authMiddleware)

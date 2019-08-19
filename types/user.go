@@ -41,3 +41,39 @@ type PidPhone struct {
 	PID   string `json:"pid"`
 	Phone string `json:"phone"`
 }
+
+// CheckPopInput TODO
+type CheckPopInput struct {
+	Token string `json:"token"`
+	PidPhone
+}
+
+// CheckAuthInput TODO
+type CheckAuthInput struct {
+	PidPhone
+	Period  int    `json:"period"`
+	AuthKey string `json:"auth_key"`
+}
+
+// AuthClaimInput TODO
+type AuthClaimInput struct {
+	PidPhone
+	DeviceList []string `json:"device_list"`
+	Start      int      `json:"start"`
+	End        int      `json:"end"`
+	Period     int      `json:"period"`
+	AuthKey    string   `json:"auth_key"`
+	Recevier   string   `json:"receiver"`
+}
+
+// AuthList TODO
+type AuthList struct {
+	PidPhone
+	// PID        string   `json:"pid"`
+	// Phone      string   `json:"phone"`
+	DeviceList []string `json:"device_list"`
+	Start      int      `json:"start"`
+	End        int      `json:"end"`
+	Period     int      `json:"period"`
+	Receiver   string   `json:"receiver"`
+}

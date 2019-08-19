@@ -92,35 +92,45 @@ func UpdateUserTimestamp(ui *types.UserInfo) error {
 	}
 }
 
+// UpdatePeriod TODO
+// 2019/08/15 20:19:17
+func UpdatePeriod(pid, phone string, start, period int) error {
+	sql := "update `user` set beginTimestamp = ?, expiredTimestamp = ? where pid = ? and phone = ?"
+	_, err := db.Exec(sql, start, period, pid, phone)
+	return err
+}
+
 // GetUserTimeStamp TODO
 // 2019/08/09 10:45:08
-func GetUserTimestamp(ui *types.Identity) (int, int, error) {
+func GetUserTimestamp(ui *types.Identity) (int, int, int, int, error) {
 	exist, err := ExistUser(ui.PID, ui.Phone)
 	if err != nil {
 		msg := fmt.Sprintf("Error while check user: %v", err)
 		logrus.Errorf(msg)
-		return 0, 0, err
+		return 0, 0, 0, 0, err
 	}
 	if exist {
-		sql := "select expiredTimeStamp,expiredTimeStamp3rd from `user` where pid = ? and phone = ?"
+		sql := "select beginTimestamp,expiredTimeStamp,beginTimestamp3rd,expiredTimeStamp3rd from `user` where pid = ? and phone = ?"
 		rows, err := db.Query(sql, ui.PID, ui.Phone)
 		if err != nil {
-			return 0, 0, err
+			return 0, 0, 0, 0, err
 		}
 		defer rows.Close()
 		var (
-			ts    int
-			ts3rd int
+			begin    int
+			ts       int
+			begin3rd int
+			ts3rd    int
 		)
 		if rows.Next() {
-			rows.Scan(&ts, &ts3rd)
+			rows.Scan(&begin, &ts, &begin3rd, &ts3rd)
 		}
-		return ts, ts3rd, nil
+		return begin, ts, begin3rd, ts3rd, nil
 
 	} else {
 		msg := fmt.Sprintf("No such user with pid: %v phone: %v", ui.PID, ui.Phone)
 		logrus.Error(msg)
-		return 0, 0, err
+		return 0, 0, 0, 0, err
 	}
 }
 
@@ -142,4 +152,51 @@ func GetAllAdmins() ([]*types.PidPhone, error) {
 		ret = append(ret, &types.PidPhone{pid, phone})
 	}
 	return ret, nil
+}
+
+// CheckAuthKey TODO
+// 2019/08/15 18:25:58
+func CheckAuthKey(pid, phone, authKey string, period int) (bool, error) {
+	sql := "select count(*) from `user` where pid = ? and phone = ? and authKey = ? "
+	rows, err := db.Query(sql, pid, phone, authKey)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+	var n int
+	if rows.Next() {
+		rows.Scan(&n)
+	}
+	if n == 0 {
+		return false, nil
+	} else {
+		sql = "update `user` set beginTimestamp = ? ,expiredTimestamp = ? where pid = ? and phone = ?"
+		_, err = db.Exec(sql, time.Now().Unix(), period, pid, phone)
+		if err != nil {
+			return true, err
+		}
+		return true, nil
+	}
+
+}
+
+// CheckAuthKeyOnly TODO
+// 2019/08/15 20:11:00
+func CheckAuthKeyOnly(pid, phone, authKey string) (bool, error) {
+	sql := "select count(*) from `user` where pid = ? and phone = ? and authKey = ? "
+	rows, err := db.Query(sql, pid, phone, authKey)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+	var n int
+	if rows.Next() {
+		rows.Scan(&n)
+	}
+	if n == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
+
 }

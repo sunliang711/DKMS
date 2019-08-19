@@ -15,3 +15,6 @@ level = "debug"
 [enc]
 server = "http://www.myprivacy.top:5000"
 token = "burenshizheshigesha"
+
+[ys]
+server = "http://aliyun.eagle711.win:7770"

@@ -198,3 +198,24 @@ func AddRK(pid, phone, receiver string, t int, n int, rk []string) error {
 	}
 	return nil
 }
+
+// GetRK by pid,phone,receiver
+// 2019/08/14 17:22:06
+func GetRK(pid, phone, receiver string) (rks []string, t int, err error) {
+	sql := "select t,segment from `keyfrag` where pid = ? and phone = ? and receiver = ?"
+	rows, err := db.Query(sql, pid, phone, receiver)
+	if err != nil {
+		logrus.Error(fmt.Sprintf("Run sql %v error: %v", sql, err))
+		return
+	}
+	defer rows.Close()
+	var (
+		segment string
+	)
+	for rows.Next() {
+		rows.Scan(&t, &segment)
+		rks = append(rks, segment)
+	}
+
+	return
+}

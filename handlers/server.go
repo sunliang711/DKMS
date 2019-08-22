@@ -29,6 +29,7 @@ func StartServer(addr string, tls bool, certFile string, keyFile string) {
 
 	router.GET("/get_crypto_config", getCryptoConfig)
 	router.POST("/update_api", updateAPI)
+	router.GET("/get_expired_timestamp2", getExpiredtimestamp)
 
 	//the following need authMiddleware
 	router.Use(authMiddleware)
